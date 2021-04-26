@@ -26,7 +26,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
   void _signUp() async {
     var userAttributes = {
       'email': emailController.text,
-      'phone_number': phoneController.text,
+      //'phone_number': phoneController.text,
     };
     try {
       var res = await Amplify.Auth.signUp(
@@ -55,50 +55,67 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 key: Key('signup-username-input'),
                 controller: usernameController,
                 decoration: const InputDecoration(
-                  icon: Icon(Icons.person),
+                  prefixIcon: Icon(Icons.person),
                   hintText: 'The name you will use to login',
                   labelText: 'Username *',
+                  border: OutlineInputBorder(),
                 ),
               ),
+              Container(height: 20.0),
               TextFormField(
                 key: Key('signup-password-input'),
                 obscureText: true,
                 controller: passwordController,
                 decoration: const InputDecoration(
-                  icon: Icon(Icons.lock),
+                  prefixIcon: Icon(Icons.lock),
                   hintText: 'The password you will use to login',
                   labelText: 'Password *',
+                  border: OutlineInputBorder(),
                 ),
               ),
+              Container(height: 20.0),
               TextFormField(
                 key: Key('signup-email-input'),
                 controller: emailController,
                 decoration: const InputDecoration(
-                  icon: Icon(Icons.email),
+                  prefixIcon: Icon(Icons.email),
                   hintText: 'Your email address',
                   labelText: 'Email *',
+                  border: OutlineInputBorder(),
                 ),
               ),
-              TextFormField(
-                key: Key('signup-phone-input'),
-                controller: phoneController,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.phone),
-                  hintText: 'Your phone number',
-                  labelText: 'Phone number *',
-                ),
+              // TextFormField(
+              //   key: Key('signup-phone-input'),
+              //   controller: phoneController,
+              //   decoration: const InputDecoration(
+              //     icon: Icon(Icons.phone),
+              //     hintText: 'Your phone number',
+              //     labelText: 'Phone number *',
+              //   ),
+              // ),
+              const Padding(padding: EdgeInsets.all(10.0)),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      key: Key('signup-button'),
+                      onPressed: _signUp,
+                      child: const Text('Sign Up'),
+                    ),
+                  ),
+                ],
               ),
               const Padding(padding: EdgeInsets.all(10.0)),
-              ElevatedButton(
-                key: Key('signup-button'),
-                onPressed: _signUp,
-                child: const Text('Sign Up'),
-              ),
-              const Padding(padding: EdgeInsets.all(10.0)),
-              ElevatedButton(
+              FlatButton(
                 key: Key('goto-signin-button'),
                 onPressed: widget.backToSignIn,
-                child: const Text('Back to Sign In'),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.arrow_back),
+                    Text(' Back to Sign In'),
+                  ],
+                ),
               ),
             ],
           ),

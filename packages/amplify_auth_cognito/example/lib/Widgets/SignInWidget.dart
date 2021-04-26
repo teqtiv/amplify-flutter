@@ -76,115 +76,139 @@ class _SignInWidgetState extends State<SignInWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      key: Key('signin-component'),
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        Expanded(
-          // wrap your Column in Expanded
-          child: Column(
-            children: [
-              TextFormField(
-                  key: Key('signin-username-input'),
-                  controller: usernameController,
-                  decoration: const InputDecoration(
-                    icon: Icon(Icons.person),
-                    hintText: 'Your username',
-                    labelText: 'Username *',
-                  )),
-              TextFormField(
-                  key: Key('signin-password-input'),
-                  obscureText: true,
-                  controller: passwordController,
-                  decoration: const InputDecoration(
-                    icon: Icon(Icons.lock),
-                    hintText: 'Your password',
-                    labelText: 'Password *',
-                  )),
-              const Padding(padding: EdgeInsets.all(5.0)),
-              GridView.count(
-                shrinkWrap: true,
-                crossAxisCount: 3,
-                crossAxisSpacing: 3,
-                mainAxisSpacing: 4,
-                childAspectRatio: 3,
-                padding: const EdgeInsets.all(5.0),
-                children: [
-                  ElevatedButton(
-                    key: Key('signin-button'),
-                    onPressed: _signIn,
-                    child: const Text('Sign In'),
-                  ),
-                  ElevatedButton(
-                    key: Key('signin-webui-button'),
-                    onPressed: _signInWithWebUI,
-                    child: const Text('Hosted UI Sign In'),
-                  ),
-                  ElevatedButton(
-                    key: Key('goto-signup-button'),
-                    onPressed: widget.showCreateUser,
-                    child: const Text('Create User'),
-                  ),
-                  ElevatedButton(
-                    key: Key('reset-button'),
-                    onPressed: _resetPassword,
-                    child: const Text('Reset Password'),
-                  ),
-                  ElevatedButton(
-                    key: Key('signout-button'),
-                    onPressed: widget.signOut,
-                    child: const Text('SignOut'),
-                  ),
-                  ElevatedButton(
-                    key: Key('session-button'),
-                    onPressed: widget.fetchSession,
-                    child: const Text('Get Session'),
-                  ),
-                  ElevatedButton(
-                    key: Key('current-user-button'),
-                    onPressed: widget.getCurrentUser,
-                    child: const Text('Get Current User'),
-                  ),
-                ],
-              ),
-             ListView(
-                shrinkWrap: true,
-                padding: const EdgeInsets.all(5.0),
-                children: [
-                  ElevatedButton(
-                    key: Key('signin-webui-button'),
-                    onPressed: _signInWithSocialWebUI,
-                    child: const Text('Sign In With Social Provider'),
-                  ),
-                  DropdownButton<AuthProvider>(
-                      value: provider,
-
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 24,
-                      elevation: 16,
-                      style: TextStyle(color: Colors.deepPurple),
-                      underline: Container(
-                        height: 2,
-                        color: Colors.deepPurpleAccent,
-                      ),
-                      onChanged: (AuthProvider newValue) {
-                        setState(() {
-                          provider = newValue;
-                        });
-                      },
-                      items: <AuthProvider>[AuthProvider.google, AuthProvider.facebook, AuthProvider.amazon]
-                          .map<DropdownMenuItem<AuthProvider>>((AuthProvider value) {
-                        return DropdownMenuItem<AuthProvider>(
-                          value: value,
-                          child: Text(value.toString()),
-                        );
-                      }).toList(),
-                    ),
-                ]
-              )
-            ],
+    return Flex(
+      direction: Axis.vertical,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        TextFormField(
+            key: Key('signin-username-input'),
+            controller: usernameController,
+            decoration: const InputDecoration(
+              prefixIcon: Icon(Icons.person),
+              hintText: 'Your username',
+              labelText: 'Username *',
+              border: OutlineInputBorder(),
+            )),
+        Container(height: 20.0),
+        TextFormField(
+          key: Key('signin-password-input'),
+          obscureText: true,
+          controller: passwordController,
+          decoration: const InputDecoration(
+            prefixIcon: Icon(Icons.lock),
+            hintText: 'Your password',
+            labelText: 'Password *',
+            border: OutlineInputBorder(),
           ),
         ),
+        const Padding(padding: EdgeInsets.all(5.0)),
+        Container(height: 20.0),
+        Row(
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                key: Key('signin-button'),
+                onPressed: _signIn,
+                child: const Text('Sign In'),
+              ),
+            ),
+            Container(width: 20.0),
+            Expanded(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.red, // background
+                  onPrimary: Colors.white, // foreground
+                ),
+                key: Key('goto-signup-button'),
+                onPressed: widget.showCreateUser,
+                child: const Text('Create User'),
+              ),
+            ),
+          ],
+        ),
+
+        // GridView.count(
+        //   shrinkWrap: true,
+        //   crossAxisCount: 1,
+        //   crossAxisSpacing: 10,
+        //   mainAxisSpacing: 10,
+        //   childAspectRatio: 8,
+        //   padding: const EdgeInsets.all(5.0),
+        //   children: [
+        //     ElevatedButton(
+        //       key: Key('signin-button'),
+        //       onPressed: _signIn,
+        //       child: const Text('Sign In'),
+        //     ),
+        //     // ElevatedButton(
+        //     //   key: Key('signin-webui-button'),
+        //     //   onPressed: _signInWithWebUI,
+        //     //   child: const Text('Hosted UI Sign In'),
+        //     // ),
+        //     ElevatedButton(
+        //       key: Key('goto-signup-button'),
+        //       onPressed: widget.showCreateUser,
+        //       child: const Text('Create User'),
+        //     ),
+        //     // ElevatedButton(
+        //     //   key: Key('reset-button'),
+        //     //   onPressed: _resetPassword,
+        //     //   child: const Text('Reset Password'),
+        //     // ),
+        //     // ElevatedButton(
+        //     //   key: Key('signout-button'),
+        //     //   onPressed: widget.signOut,
+        //     //   child: const Text('SignOut'),
+        //     // ),
+        //     // ElevatedButton(
+        //     //   key: Key('session-button'),
+        //     //   onPressed: widget.fetchSession,
+        //     //   child: const Text('Get Session'),
+        //     // ),
+        //     // ElevatedButton(
+        //     //   key: Key('current-user-button'),
+        //     //   onPressed: widget.getCurrentUser,
+        //     //   child: const Text('Get Current User'),
+        //     // ),
+        //   ],
+        // ),
+        // ListView(
+        //     shrinkWrap: true,
+        //     padding: const EdgeInsets.all(5.0),
+        //     children: [
+        //       ElevatedButton(
+        //         key: Key('signin-webui-button'),
+        //         onPressed: _signInWithSocialWebUI,
+        //         child: const Text('Sign In With Social Provider'),
+        //       ),
+        //       DropdownButton<AuthProvider>(
+        //         value: provider,
+        //         icon: Icon(Icons.arrow_downward),
+        //         iconSize: 24,
+        //         elevation: 16,
+        //         style: TextStyle(color: Colors.deepPurple),
+        //         underline: Container(
+        //           height: 2,
+        //           color: Colors.deepPurpleAccent,
+        //         ),
+        //         onChanged: (AuthProvider newValue) {
+        //           setState(() {
+        //             provider = newValue;
+        //           });
+        //         },
+        //         items: <AuthProvider>[
+        //           AuthProvider.google,
+        //           AuthProvider.facebook,
+        //           AuthProvider.amazon
+        //         ].map<DropdownMenuItem<AuthProvider>>(
+        //             (AuthProvider value) {
+        //           return DropdownMenuItem<AuthProvider>(
+        //             value: value,
+        //             child: Text(value.toString()),
+        //           );
+        //         }).toList(),
+        //       ),
+        //     ])
       ],
     );
   }

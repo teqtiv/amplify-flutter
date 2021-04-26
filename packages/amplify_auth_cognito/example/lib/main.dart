@@ -55,6 +55,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+    _isAmplifyConfigured ? null : _configureAmplify();
     super.initState();
   }
 
@@ -227,36 +228,43 @@ class _MyAppState extends State<MyApp> {
           // wrap your Column in Expanded
           child: Column(
             children: [
-              const Padding(padding: EdgeInsets.all(10.0)),
-              Text('You are signed in!'),
+              FutureBuilder(
+                  future: Amplify.Auth.getCurrentUser(),
+                  builder:
+                      (BuildContext context, AsyncSnapshot<AuthUser> snap) {
+                    return Text(
+                        ((snap?.data?.username) ?? '') + ' you are signed in!');
+                  }),
+              // const Padding(padding: EdgeInsets.all(10.0)),
+              // Text('You are signed in!'),
               const Padding(padding: EdgeInsets.all(10.0)),
               ElevatedButton(
                 onPressed: _signOut,
                 child: const Text('Sign Out'),
               ),
-              const Padding(padding: EdgeInsets.all(10.0)),
-              ElevatedButton(
-                onPressed: _showUpdatePassword,
-                child: const Text('Change Password'),
-              ),
-              const Padding(padding: EdgeInsets.all(10.0)),
-              ElevatedButton(
-                onPressed: _stopListening,
-                child: const Text('Stop Listening'),
-              ),
-              const Padding(padding: EdgeInsets.all(10.0)),
-              ElevatedButton(
-                onPressed: _fetchSession,
-                child: const Text('Get Session'),
-              ),
-              const Padding(padding: EdgeInsets.all(10.0)),
-              ElevatedButton(
-                  onPressed: _getCurrentUser,
-                  child: const Text('Get CurrentUser')),
-              const Padding(padding: EdgeInsets.all(10.0)),
-              ElevatedButton(
-                  onPressed: _fetchUserAttributes,
-                  child: const Text('Get User Attributes'))
+              // const Padding(padding: EdgeInsets.all(10.0)),
+              // ElevatedButton(
+              //   onPressed: _showUpdatePassword,
+              //   child: const Text('Change Password'),
+              // ),
+              // const Padding(padding: EdgeInsets.all(10.0)),
+              // ElevatedButton(
+              //   onPressed: _stopListening,
+              //   child: const Text('Stop Listening'),
+              // ),
+              // const Padding(padding: EdgeInsets.all(10.0)),
+              // ElevatedButton(
+              //   onPressed: _fetchSession,
+              //   child: const Text('Get Session'),
+              // ),
+              // const Padding(padding: EdgeInsets.all(10.0)),
+              // ElevatedButton(
+              //     onPressed: _getCurrentUser,
+              //     child: const Text('Get CurrentUser')),
+              // const Padding(padding: EdgeInsets.all(10.0)),
+              // ElevatedButton(
+              //     onPressed: _fetchUserAttributes,
+              //     child: const Text('Get User Attributes'))
             ],
           ),
         ),
@@ -283,52 +291,49 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-          appBar: AppBar(
-            title: const Text('Plugin example app'),
+        // appBar: AppBar(
+        //   title: const Text('Plugin example app'),
+        // ),
+        body: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: 20.0,
           ),
-          body: SizedBox(
-            height: 600,
-            child: ListView(
-              padding: EdgeInsets.all(10.0),
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              children: <Widget>[
-                Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      showAuthState(),
-                      showHubEvent(),
-                      if (displayState == 'SHOW_SIGN_UP')
-                        SignUpWidget(
-                            showResult, changeDisplay, setError, _backToSignIn),
-                      if (displayState == 'SHOW_CONFIRM')
-                        ConfirmSignUpWidget(
-                            showResult, changeDisplay, setError, _backToSignIn),
-                      if (displayState == 'SHOW_SIGN_IN')
-                        SignInWidget(showResult, changeDisplay, _showCreateUser,
-                            _signOut, _fetchSession, _getCurrentUser, setError),
-                      if (displayState == 'SHOW_CONFIRM_SIGN_IN')
-                        ConfirmSignInWidget(
-                            showResult, changeDisplay, setError, _backToSignIn),
-                      if (displayState == 'SHOW_UPDATE_PASSWORD')
-                        UpdatePasswordWidget(showResult, changeDisplay,
-                            setError, _backToSignIn, _backToApp),
-                      if (displayState == 'SHOW_UPDATE_PASSWORD')
-                        if (displayState == 'SHOW_CONFIRM_RESET')
-                          ConfirmResetWidget(showResult, changeDisplay,
-                              setError, _backToSignIn),
-                      if (this.displayState == "SIGNED_IN") showApp(),
-                      ElevatedButton(
-                        key: Key('configure-button'),
-                        onPressed:
-                            _isAmplifyConfigured ? null : _configureAmplify,
-                        child: const Text('configure'),
-                      ),
-                      if (error != null) showErrors()
-                    ])
-              ],
-            ),
-          )),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              //showAuthState(),
+              //showHubEvent(),
+              if (displayState == 'SHOW_SIGN_UP')
+                SignUpWidget(
+                    showResult, changeDisplay, setError, _backToSignIn),
+              // if (displayState == 'SHOW_CONFIRM')
+              //   ConfirmSignUpWidget(
+              //       showResult, changeDisplay, setError, _backToSignIn),
+              if (displayState == 'SHOW_SIGN_IN')
+                SignInWidget(showResult, changeDisplay, _showCreateUser,
+                    _signOut, _fetchSession, _getCurrentUser, setError),
+              // if (displayState == 'SHOW_CONFIRM_SIGN_IN')
+              //   ConfirmSignInWidget(
+              //       showResult, changeDisplay, setError, _backToSignIn),
+              // if (displayState == 'SHOW_UPDATE_PASSWORD')
+              //   UpdatePasswordWidget(showResult, changeDisplay,
+              //       setError, _backToSignIn, _backToApp),
+              // if (displayState == 'SHOW_UPDATE_PASSWORD')
+              //   if (displayState == 'SHOW_CONFIRM_RESET')
+              //     ConfirmResetWidget(showResult, changeDisplay,
+              //         setError, _backToSignIn),
+              if (this.displayState == "SIGNED_IN") showApp(),
+              // ElevatedButton(
+              //   key: Key('configure-button'),
+              //   onPressed:
+              //       _isAmplifyConfigured ? null : _configureAmplify,
+              //   child: const Text('configure'),
+              // ),
+              if (error != null) showErrors()
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
